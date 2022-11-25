@@ -96,6 +96,9 @@ class Snake:
         if not 0 <= self.body[0].x < cell_number or not 0 <= self.body[0].y < cell_number:
             print("EndGame")
             sys.exit()
+        for block in self.body[1:]:
+            if block == self.body[0]:
+                print("Trung than. Game over")
 pygame.init()
 
 cell_size = 40
