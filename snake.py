@@ -149,6 +149,8 @@ while True:
                         snake.direction = Vector2(1, 0)
 
     screen.fill((214, 150, 187))
+    
     snake.draw_snake()
+
     pygame.display.update()
     clock.tick(60)
