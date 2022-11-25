@@ -1,12 +1,13 @@
 import pygame , sys
-import random
 from pygame.math import Vector2
-
+from Food import Food
 
 class Snake:
     def __init__(self):
+
         self.body = [Vector2(7, 10), Vector2(6, 10), Vector2(5, 10)]
         self.direction = Vector2(1, 0) # move right
+
         self.new_block = False
 
         self.head_up = pygame.image.load('Graphics/head_up.png').convert_alpha()
@@ -26,6 +27,9 @@ class Snake:
         self.body_tl = pygame.image.load('Graphics/body_tl.png').convert_alpha()
         self.body_br = pygame.image.load('Graphics/body_br.png').convert_alpha()
         self.body_bl = pygame.image.load('Graphics/body_bl.png').convert_alpha()
+    
+        # self.food = Food(cell_number, cell_number, cell_size)
+        # self.food.Generate_new_food(self.body)
     
     def draw_snake(self):
         self.update_head_graphics()
@@ -79,6 +83,12 @@ class Snake:
         else: self.tail = self.tail_down
 
     def move_snake(self):
+        # # handle eat food
+        # if self.food.Eat_food(self.body[0]):
+        #     self.add_block()
+        #     self.food.Generate_new_food(self.body)
+        
+        # handle movement
         if self.new_block == True:
             body_copy = self.body[:]
             body_copy.insert(0, body_copy[0] + self.direction)
@@ -88,7 +98,7 @@ class Snake:
             body_copy = self.body[:-1]
             body_copy.insert(0, body_copy[0] + self.direction)
             self.body = body_copy[:]
-
+            
     def add_block(self):
         self.new_block = True
 
@@ -102,12 +112,17 @@ class Snake:
                 sys.exit()
 pygame.init()
 
-cell_size = 40
+cell_size = 30
 cell_number = 20
 screen = pygame.display.set_mode((cell_size * cell_number, cell_size * cell_number))
 clock = pygame.time.Clock()
 
+# init snake
 snake = Snake()
+
+# init food
+food = Food(cell_number, cell_number, cell_size)
+food.Generate_new_food(snake.body)
 
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE, 150)
@@ -124,6 +139,10 @@ while True:
             snake.check_fail()
 
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                pygame.quit()
+                sys.exit()
+            
             if event.key == pygame.K_UP:
                 if snake.direction.y != 1:
                     snake.direction = Vector2(0, -1)
@@ -139,6 +158,18 @@ while True:
                         snake.direction = Vector2(1, 0)
 
     screen.fill((214, 150, 187))
+
+    
+    snake.draw_score()
+
+
     snake.draw_snake()
+    
+    # food handling
+    food.Draw(screen)
+    if food.Update(snake.body):
+        snake.add_block()
+    
+
     pygame.display.update()
     clock.tick(60)
