@@ -99,6 +99,7 @@ class Snake:
         for block in self.body[1:]:
             if block == self.body[0]:
                 print("Trung than. Game over")
+                sys.exit()
 pygame.init()
 
 cell_size = 40
