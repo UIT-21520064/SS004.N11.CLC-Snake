@@ -150,7 +150,7 @@ while True:
 
     screen.fill((214, 150, 187))
     
-    snake.draw_snake()
+    snake.draw_score()
 
     pygame.display.update()
     clock.tick(60)
