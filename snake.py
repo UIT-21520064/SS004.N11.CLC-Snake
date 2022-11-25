@@ -149,6 +149,11 @@ while True:
                         snake.direction = Vector2(1, 0)
 
     screen.fill((214, 150, 187))
+
+    
+    snake.draw_score()
+
+
     snake.draw_snake()
     
     # food handling
@@ -156,5 +161,6 @@ while True:
     if food.Update(snake.body):
         snake.add_block()
     
+
     pygame.display.update()
     clock.tick(60)
