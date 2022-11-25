@@ -4,9 +4,10 @@ from Food import Food
 
 class Snake:
     def __init__(self):
-        # first index is a head
-        self.body = [Vector2(5, 10), Vector2(6, 10), Vector2(7, 10)] 
-        self.direction = Vector2(-1, 0) # move left
+
+        self.body = [Vector2(7, 10), Vector2(6, 10), Vector2(5, 10)]
+        self.direction = Vector2(1, 0) # move right
+
         self.new_block = False
 
         self.head_up = pygame.image.load('Graphics/head_up.png').convert_alpha()
@@ -101,7 +102,14 @@ class Snake:
     def add_block(self):
         self.new_block = True
 
-
+    def check_fail(self):
+        if not 0 <= self.body[0].x < cell_number or not 0 <= self.body[0].y < cell_number:
+            print("EndGame")
+            sys.exit()
+        for block in self.body[1:]:
+            if block == self.body[0]:
+                print("Trung than. Game over")
+                sys.exit()
 pygame.init()
 
 cell_size = 30
@@ -128,6 +136,7 @@ while True:
 
         if event.type == SCREEN_UPDATE:
             snake.move_snake()
+            snake.check_fail()
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
