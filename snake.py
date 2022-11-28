@@ -101,6 +101,25 @@ class Snake:
             
     def add_block(self):
         self.new_block = True
+        
+    def draw_score(self):
+        score_text = str(len(self.body) - 3)
+        score_surface = game_font.render(score_text, True, (33, 146, 255))
+
+        score_x = int(cell_size * cell_number - 60)
+        score_y = int(cell_size * cell_number - 40)
+        score_rect = score_surface.get_rect(center=(score_x, score_y))
+
+        apple_rect = apple.get_rect(midright=(score_rect.left, score_rect.centery))
+
+
+        bg_rect = pygame.Rect(apple_rect.left, apple_rect.top, apple_rect.width + score_rect.width + 6, apple_rect.height)
+
+        pygame.draw.rect(screen, (253, 255, 0), bg_rect)
+        screen.blit(score_surface, score_rect)
+        screen.blit(apple, apple_rect)
+        pygame.draw.rect(screen, (161, 73, 250), bg_rect, 2)
+
 
     def check_fail(self):
         if not 0 <= self.body[0].x < cell_number or not 0 <= self.body[0].y < cell_number:
@@ -110,11 +129,14 @@ class Snake:
             if block == self.body[0]:
                 print("Trung than. Game over")
                 sys.exit()
+
 pygame.init()
 
 cell_size = 30
 cell_number = 20
-screen = pygame.display.set_mode((cell_size * cell_number, cell_size * cell_number))
+screen = pygame.display.set_mode((cell_number * cell_size,cell_number * cell_size))
+game_font = pygame.font.Font('Font/PoetsenOne-Regular.ttf', 25)
+apple = pygame.image.load('Graphics/apple.png').convert_alpha()
 clock = pygame.time.Clock()
 
 # init snake
@@ -133,7 +155,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
+            
         if event.type == SCREEN_UPDATE:
             snake.move_snake()
             snake.check_fail()
