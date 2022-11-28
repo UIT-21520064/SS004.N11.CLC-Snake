@@ -1,6 +1,6 @@
 # Install requirtments
 
-`$ pip install -r requirments.txt`
+`$ pip install -r requirements.txt`
 
 # Run snake game
 `$ python snake.py`
